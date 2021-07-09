@@ -4,7 +4,7 @@
 
 [The real damage: Why FEMA is denying aid to Black disaster survivors in the Deep South](https://www.washingtonpost.com)
 
-The Post reviewed more than 9.5 million applications to FEMA's Individuals and Households Program since 2010, excluding territories. Details on the Post's methodology and summarized data can be found within this repo.
+The Post reviewed more than 9.5 million applications to FEMA's Individuals and Households Program since 2010 to determine rejection rates based on land title issues. Details on the Post's methodology and summarized data can be found within this repo.
 
 # About the data
 
