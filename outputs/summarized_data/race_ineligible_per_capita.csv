@@ -1,0 +1,5 @@
+plurality,population,total_eligible,total_ineligible_ownership_not_verified,total_other,per_10k_eligible,per_10k_ineligible,per_10k_other
+Asian,2920445,88,249,911,0.3,0.9,3.1
+Black,3373621,28586,8945,78544,84.7,26.5,232.8
+Hispanic,29897535,87914,21746,437915,29.4,7.3,146.5
+White,85942641,299147,82304,1363174,34.8,9.6,158.6

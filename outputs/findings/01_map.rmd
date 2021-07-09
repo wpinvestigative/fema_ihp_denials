@@ -1,0 +1,253 @@
+---
+title: "FEMA Denials since 2010"
+author: "Andrew Ba Tran"
+date: "6/30/2021"
+output:
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    theme: paper
+    source_code: embed
+---
+
+```{r setup, include=FALSE, warning=F, message=F}
+# setting up R Markdown options
+
+# We want to hide the code and only see the results
+knitr::opts_chunk$set(echo = F)
+
+# We don't want to see any warnings from our code
+knitr::opts_chunk$set(warning = F)
+
+# We don't want to see any messages
+knitr::opts_chunk$set(message = F)
+```
+
+```{r install_packages, warning=F, message=F}
+# You must have the flexdashboard package installed
+# Before knitting this R Markdown file
+# install.packages("flexdashboard")
+
+# This function checks if you don't have the correct packages installed yet
+# If not, it will install it for you
+packages <- c("tidyverse", "flexdashboard",
+              "crosstalk", "leaflet", "DT")
+
+if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
+  install.packages(setdiff(packages, rownames(installed.packages())), repos = "http://cran.us.r-project.org")  
+}
+library(tidyverse)
+library(flexdashboard)
+library(crosstalk)  
+library(leaflet)   
+library(DT)   
+```
+
+```{r load_and_clean_data}
+library(sf)
+library(leaflet)
+library(tidyverse)
+library(arcos)
+library(tigris)
+library(janitor)
+counties_reprojected <- st_read("../../data/clean_data/shapefiles/counties_reprojected.shp", quiet=T) 
+states_borders <- st_read("../../data/clean_data/shapefiles/states_reprojected.shp", quiet=T)
+counties_data <- read_csv("../../outputs/summarized_data/county_analysis_geoids_updated.csv") %>% 
+  clean_names()
+race_data <- read_csv("../../data/clean_data/mega_race_counties.csv") %>% 
+  select(GEOID, plurality)
+
+
+counties_merged <- left_join(counties_reprojected, counties_data, by=c("fips"="geoid")) %>% 
+  ungroup() %>% 
+  left_join(race_data, by=c("fips"="GEOID")) %>% 
+  select(state=state.y, state.x, county_name, eligible=total_eligible, ineligible=total_ineligible_ownership_not_verified,
+         other=total_other, percent_eligible, percent_ineligible=percent_ineligible_ownership_not_verified, percent_other,
+         pop=poverty_population, pctpov, plurality, geometry) %>% 
+  mutate(pctpov=round(pctpov,1)) %>% 
+  filter(!is.na(state)) %>% 
+  mutate(poverty_quantile=ntile(pctpov, 4)) %>% 
+  arrange(desc(percent_ineligible))
+
+
+
+#counties_merged[is.na(counties_merged)] <- 0
+
+#pal <- colorNumeric("Reds", domain =0:150, na.color = "#640E27")
+pal_ineligible <- colorNumeric("Greens", domain =0:26, na.color = "#dbdbdb")
+
+#pal_cases <- colorQuantile("Reds", domain=1:max(counties_merged$`cases per 100k`, na.rm=T), n=6)
+#pal_deaths <- colorNumeric("Reds", domain=1:40, na.color="#640E27")
+
+library(sp)
+# this sets up some custom projection in leaflet
+# complicated but necessary
+epsg2163 <- leafletCRS(
+  crsClass = "L.Proj.CRS",
+  code = "EPSG:2163",
+  proj4def = "+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs",
+  resolutions = 2^(16:7))
+
+popup_sb <- paste0("<strong>", counties_merged$county_name, "</strong><br/>Pop: ", 
+                   prettyNum(counties_merged$pop, big.mark=","), "<br/>Ineligible: ", 
+                   counties_merged$percent_ineligible, "%<br />",
+                   "Total eligible: ", prettyNum(counties_merged$eligible, big.mark=","),
+                   "<br />Plurality: ", counties_merged$plurality, 
+                   "<br />In poverty: ", round(counties_merged$pctpov,1), "%")
+
+counties_merged_table <- counties_merged
+counties_merged_table$geometry <- NULL
+
+st <- SharedData$new(counties_merged_table)
+```
+
+Data from FEMA {data-icon="ion-bar-chart-outline"}
+=====================================  
+
+Inputs {.sidebar}
+-------------------------------------
+
+### Filters
+
+```{r filter_section}
+filter_select(
+  id = "state.x",
+  label = "State",
+  sharedData = st,
+  group = ~state.x
+)
+filter_select(
+  id = "county_name",
+  label = "County",
+  sharedData = st,
+  group = ~county_name
+)
+filter_slider(
+    id = "ineligible",
+    label = "Total ineligible",
+    sharedData = st,
+    column = ~ineligible,
+    round = TRUE,
+    sep = ",",
+    ticks = TRUE
+  )
+filter_slider(
+    id = "eligible",
+    label = "Total eligible",
+    sharedData = st,
+    column = ~eligible,
+    round = TRUE,
+    sep = ",",
+    ticks = TRUE
+  )
+filter_slider(
+    id = "pop",
+    label = "Population",
+    sharedData = st,
+    column = ~pop,
+    round = TRUE,
+    sep = ",",
+    ticks = TRUE
+  )
+filter_slider(
+    id = "poverty_quantile",
+    label = "Percent poverty quantile",
+    sharedData = st,
+    column = ~poverty_quantile,
+    ticks = TRUE,
+    round = TRUE
+  )
+filter_select(
+  id = "plurality",
+  label = "Plurality",
+  sharedData = st,
+  group = ~plurality
+)
+
+```
+
+
+Row
+-------------------------------------
+
+### Cases
+
+```{r interactive_map_cases}
+leaflet(options = leafletOptions(crs = epsg2163)) %>%
+  addPolygons(data=counties_merged, fillOpacity = 1, 
+              weight = 0.9, 
+              smoothFactor = 0.2, 
+              stroke=TRUE,
+              color="white") %>% 
+  addPolygons(
+    data=counties_merged,
+    fillColor = ~pal_ineligible(percent_ineligible), fillOpacity = 1, 
+    weight = 0.9, 
+    smoothFactor = 0.2, 
+    stroke=FALSE) %>% 
+  addPolygons(data=states_borders, fillOpacity = 0, 
+              weight = 0.9, 
+              smoothFactor = 0.2, 
+              stroke=TRUE,
+              color="black") %>% 
+  addPolygons(data=counties_merged,
+              fillOpacity = 0, 
+              weight = 0.9, 
+              smoothFactor = 0.2, 
+              opacity=1,
+              color="transparent",
+              #stroke=FALSE,
+              popup=~popup_sb,
+              highlightOptions = highlightOptions(color = "black", weight = 2,
+                                                  bringToFront = TRUE)) %>% 
+  addLegend("bottomright", pal = pal_ineligible, 1:26,
+            title = "Percent ineligible",
+            opacity = 1
+  )
+
+
+
+```
+
+Row 
+-------------------------------------
+
+### Datatable
+
+```{r filterable_table}
+st %>% 
+  DT::datatable(
+    filter = "top",  # allows filtering on each column
+    extensions = c(
+      "Buttons",  # add download buttons, etc
+      "Scroller"  # for scrolling down the rows rather than pagination
+    ),
+    rownames = FALSE,  # remove rownames
+    style = "bootstrap",
+    class = "compact",
+    width = "100%",
+    options = list(
+      dom = "Blrtip",  # specify content (search box, etc)
+      deferRender = TRUE,
+      scrollY = 300,
+      scroller = TRUE, 
+      columnDefs = list(
+        list(
+          visible=F,
+          targets=c(1, 8, 10)
+        )
+      ),
+      buttons = list(
+        I("colvis"),  # turn columns on and off
+        "csv",  # download as .csv
+        "excel"  # download as .xlsx
+      )
+    ),
+      colnames = c(
+        "county"="county_name",
+        "percent eligible"="percent_eligible",
+        "percent ineligible"= "percent_ineligible",
+        "percent other"= "percent_other",
+        "poverty quantile"="poverty_quantile"
+        
+      ))
+```

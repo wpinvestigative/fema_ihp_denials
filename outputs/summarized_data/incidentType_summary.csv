@@ -1,0 +1,35 @@
+incidentType,home_status,total,percent
+Biological,Other,184245,100
+Dam/Levee Break,Eligible,1874,35.8
+Dam/Levee Break,"Ineligible, Ownership Not Verified",140,2.7
+Dam/Levee Break,Other,3221,61.5
+Earthquake,Eligible,3630,13.1
+Earthquake,"Ineligible, Ownership Not Verified",375,1.4
+Earthquake,Other,23621,85.5
+Fire,Eligible,12403,10.1
+Fire,"Ineligible, Ownership Not Verified",4315,3.5
+Fire,Other,106269,86.4
+Flood,Eligible,167783,22.3
+Flood,"Ineligible, Ownership Not Verified",25471,3.4
+Flood,Other,557520,74.3
+Hurricane,Eligible,706251,12.9
+Hurricane,"Ineligible, Ownership Not Verified",75570,1.4
+Hurricane,Other,4706435,85.8
+Mud/Landslide,Eligible,24,2.3
+Mud/Landslide,"Ineligible, Ownership Not Verified",4,0.4
+Mud/Landslide,Other,994,97.3
+Other,Eligible,55,6.6
+Other,"Ineligible, Ownership Not Verified",7,0.8
+Other,Other,768,92.5
+Severe Ice Storm,Eligible,42206,10
+Severe Ice Storm,"Ineligible, Ownership Not Verified",20774,4.9
+Severe Ice Storm,Other,357405,85
+Severe Storm(s),Eligible,136332,18.7
+Severe Storm(s),"Ineligible, Ownership Not Verified",13750,1.9
+Severe Storm(s),Other,577636,79.4
+Tornado,Eligible,6147,13.6
+Tornado,"Ineligible, Ownership Not Verified",796,1.8
+Tornado,Other,38290,84.7
+Volcano,Eligible,592,20.5
+Volcano,"Ineligible, Ownership Not Verified",72,2.5
+Volcano,Other,2217,77

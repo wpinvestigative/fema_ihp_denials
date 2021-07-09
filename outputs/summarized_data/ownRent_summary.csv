@@ -1,0 +1,10 @@
+ownRent,home_status,total,percent
+Owner,Eligible,415411,14.4
+Owner,"Ineligible, Ownership Not Verified",107393,3.7
+Owner,Other,2369429,81.9
+Renter,Eligible,369413,12.9
+Renter,"Ineligible, Ownership Not Verified",2523,0.1
+Renter,Other,2499968,87
+Unknown,Eligible,80,0.5
+Unknown,"Ineligible, Ownership Not Verified",5810,33.3
+Unknown,Other,11580,66.3

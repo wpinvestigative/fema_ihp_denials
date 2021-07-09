@@ -1,0 +1,109 @@
+#bad batching
+
+ready.gov
+
+the registration intake portal
+
+teased out whether it was captured by phone bank or mible app
+
+there's a lag time for those updates
+
+i would say
+it's not a true api
+it's somewhere...
+there's a certain amount of lag
+
+the information is in constant flux
+
+there might be some erroneous
+data discrepanccies
+
+they also collect info directly in the field
+sometimes that might be kep tlocally
+and pushed to headquarters
+and that's
+
+might be some dpulicates
+
+whole number of issues
+
+there are mechanisms in place
+
+we in the mapping side
+kick things out if
+too far outside a given perimeter of a county
+people from
+neighboring counties that havent been declared
+or flagged for ppotential fraudulence
+
+there's a whole bunch of ways that
+that ineligibility could be kicked in if tha tmakes sense
+
+if you look at it
+that's sor tof the problem
+
+there could be multple disasers coming at he  same time
+each one has a given set of circumstances
+
+found wildfires in oregoan last year
+lots of fraudlent claims
+in counties that werent even impacted by the wildfires
+
+they still get processed
+they get assigned a reg id number
+but it's people in a variety of manner
+
+searching fo rmoney 
+
+it gets assigned based on the address input
+
+bu tsometimes verifiation process
+it's not a valid address
+it gets further flagged
+
+i would say the data you see
+is not the full extent of the different
+flags and criteria we put in place
+valid registration
+
+valid address
+some type of address 
+
+it's
+
+always the best explanation i can come up with
+it's like taking an instant census taht's validated as it's going
+
+so you know
+the proverbial crap hits teh fan
+you're going to get a myriad of data integrity errors
+as it progresses
+the things that are addressed
+sort of tease out any hiccups and locations
+autoassigning to the appropriate county
+
+it is... each person's individual situation
+is wildly different fro their neighbors
+
+there's legal aid societies
+deed and title
+documents
+that sort of prove down the line
+sometimes that takes a couple of months to tease out
+just depends on the area of the country
+happened in 2016 in flooding events of louisiana
+it's not uncommon
+people lose documentation in the specific event
+so you know there's no record
+
+oregon wildfires
+
+doing my taxes...
+i started in january
+
+
+
+insurance aspect is a little bit of a blackhole
+
+
+

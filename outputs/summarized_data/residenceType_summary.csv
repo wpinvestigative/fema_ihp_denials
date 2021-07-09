@@ -1,0 +1,36 @@
+residenceType,home_status,total,percent
+Apartment,Eligible,143036,13.4
+Apartment,"Ineligible, Ownership Not Verified",359,0
+Apartment,Other,927079,86.6
+Assisted Living Facility,Eligible,368,7.5
+Assisted Living Facility,"Ineligible, Ownership Not Verified",1,0
+Assisted Living Facility,Other,4524,92.5
+Boat,Eligible,722,18.3
+Boat,"Ineligible, Ownership Not Verified",241,6.1
+Boat,Other,2993,75.7
+College Dorm,Eligible,25,1.7
+College Dorm,Other,1425,98.3
+Condo,Eligible,20830,15
+Condo,"Ineligible, Ownership Not Verified",1144,0.8
+Condo,Other,116653,84.1
+Correctional Facility,Eligible,46,6.4
+Correctional Facility,"Ineligible, Ownership Not Verified",1,0.1
+Correctional Facility,Other,675,93.5
+House/Duplex,Eligible,465641,13.2
+House/Duplex,"Ineligible, Ownership Not Verified",61685,1.8
+House/Duplex,Other,2989444,85
+Military Housing,Eligible,167,5.5
+Military Housing,Other,2849,94.5
+Mobile Home,Eligible,107963,18
+Mobile Home,"Ineligible, Ownership Not Verified",41868,7
+Mobile Home,Other,450087,75
+Other,Eligible,16587,6.7
+Other,"Ineligible, Ownership Not Verified",2258,0.9
+Other,Other,227144,92.3
+Townhouse,Eligible,20941,14
+Townhouse,"Ineligible, Ownership Not Verified",931,0.6
+Townhouse,Other,128162,85.4
+Travel Trailer,Eligible,8578,18.8
+Travel Trailer,"Ineligible, Ownership Not Verified",7238,15.9
+Travel Trailer,Other,29774,65.3
+Unknown,Other,168,100
