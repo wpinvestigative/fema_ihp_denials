@@ -17,7 +17,7 @@ outputs/findings/01_map_2010.html
 outputs/findings/02_map_2015.html
 outputs/findings/02_map_2015.Rmd
 scripts/analysis/02_spreadsheet_maker.R
-
+scripts/analysis/01_early_analysis_og.R
 
 # .ds_store
 .DS_Store

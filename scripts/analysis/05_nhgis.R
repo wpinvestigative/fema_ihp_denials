@@ -29,3 +29,16 @@ counties %>%
   leaflet() %>% 
   addTiles() %>% 
   addPolygons(popup=~name)
+
+
+# hale slave population
+
+hale_counties <- c("G0100630", "G0100910", "G0101050", "G0101250")
+
+old1_hale <- filter(old1, GISJOIN %in% hale_counties)
+old1_hale <- old1_hale %>% left_join(old2)
+
+old1_hale <- old1_hale %>% 
+  summarize(AGU001=sum(AGU001),
+            AG3001=sum(AG3001)) %>% 
+  mutate(percent_slaves=AGU001/AG3001*100)

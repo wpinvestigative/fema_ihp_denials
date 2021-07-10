@@ -1,11 +1,14 @@
 library(tidycensus)
 
+# bring in data created in 01_early_analysis.R
 county_analysis <- read_csv("outputs/summarized_data/county_analysis_updated.csv", na="")
 
+# add in DC and Puerto Rico
 state_abb <- c(state.abb, "DC", "PR")
 state_names <- c(state.name, "District of Columbia", "Puerto Rico")
 states_df <- data.frame(state=state_abb, state_name=state_names)
 
+# clean up the county names to join later
 county_analysis <- left_join(county_analysis, states_df)
 county_analysis <- county_analysis %>% 
    mutate(county_name=gsub(" \\(.*", "", county))
@@ -13,7 +16,7 @@ county_analysis <- county_analysis %>%
 
 
 county_diversity <- function(year=2019) {
-  # pulls data from XXXX by county
+  # pulls population data from the Census by county
   county_diversity_df <- get_acs(geography = "county",
                                  variables = c("B03002_003", # white alone
                                                "B03002_004", # black alone
@@ -43,7 +46,7 @@ county_diversity <- function(year=2019) {
 
 census2019 <- county_diversity(year=2019)
 
-
+# pulls in poverty figures by county from the Census
 county_pov <- get_acs(geography = "county",
                       variables = "B17001_002",
                       summary_var = "B17001_001") %>% 
@@ -53,7 +56,7 @@ county_pov <- county_pov %>%
   select(GEOID, NAME, poverty_estimate=estimate, poverty_population=summary_est,
          pctpov)
 
-
+# cleaning up the county names to join easier with the FEMA data
 county_pov <- county_pov %>% 
   mutate(state_name=gsub(".*, ", "", NAME)) %>% 
   mutate(county_name=gsub(", .*", "", NAME)) %>% 
@@ -62,10 +65,7 @@ county_pov <- county_pov %>%
   mutate(county_name=gsub(" city.*", "", county_name))
   
 
-
-
-
-#df_counties <- df_counties %>% 
+# renaming FEMA counties so they match with Census counties
 county_analysis <- county_analysis %>% 
   mutate(county_name=case_when(
     county_name=="Oglala Sioux Tribe of the Pine Ridge Reservation" ~ "Oglala Lakota",
@@ -105,42 +105,17 @@ county_analysis <- county_analysis %>%
     TRUE ~ county_name
     
   ))
-#county / county_name
-#1. Oglala Lakota (County) = Oglala Sioux Tribe of the Pine Ridge Reservation
-#2. La Salle (Parish) = LaSalle
-#3. delete " city"
-#4. Hendry (County) = Big Cypress Indian Reservation
-#5. Hillsborough (County) = Tampa Reservation
-#6. St. Lucie (County) = Fort Pierce Indian Reservation
-#7. Broward (County) = Hollywood Indian Reservation
-#8. Collier (County) = Immokalee Indian Reservation
-#9. Glades (County) = Brighton Indian Reservation
-#10.?? Anchorage (Borough) = Anchorage Municipality
-#11.?? Matanuska-Susitna Borough = Matanuska-Susitna (Borough)
-#12.?? Kenai Peninsula Borough = Kenai Peninsula (Borough)
-#13. Knox (County) = Santee Indian Reservation
-#14. La Salle (County) = LaSalle (IL only)
-#15.  Neshoba (County) = Mississippi Choctaw Indian Reservation
-#16. Dona Ana = Doña Ana
-#17. DeBaca (County) = De Baca
-#18. Bethel (Census Area) = Bethel Census Area
-#19. Kodiak Island (Borough) = Kodiak Island Borough
-#20. Fairbanks North Star (Borough) = Fairbanks North Star Borough
-#21. Skagway (Municipality) = Skagway Municipality
-#22. Ketchikan Gateway (Borough) = Ketchikan Gateway Borough
-#23. Juneau (Borough) = Juneau City and Borough
 
-#counties <- full_join(county_pov, df_counties)
+# joining fema data with census data
 county_analysis <- left_join(county_analysis, county_pov)
 county_analysis <- county_analysis %>% 
   filter(!is.na(GEOID))
 
-write_csv(county_analysis, "outputs/summarized_data/county_analysis_geoids_updated.csv", na="")
+#exporting
+write_csv(county_analysis, "outputs/summarized_data/county_analysis_geoids_updated.csv", na="0")
 #write_csv(county_analysis, "outputs/summarized_data/county_analysis_geoids_updated_annual.csv", na="")
 
-fix_counties <- counties %>% filter(is.na(NAME))
-fix_counties <- filter(fix_counties, state_name!="Puerto Rico")
-View(fix_counties)
+
 
 
 

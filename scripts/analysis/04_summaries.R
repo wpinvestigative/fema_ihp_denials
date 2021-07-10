@@ -1,6 +1,8 @@
 library(tidyverse)
 library(janitor)
 
+# bringing in data created by 01_early_analysis.R and 03_geoid_crosswalk.R
+
 counties_data <- read_csv("outputs/summarized_data/county_analysis_geoids_updated.csv") %>% 
   clean_names()
 
@@ -188,13 +190,3 @@ counties %>%
          per_10k_other=round(total_other/population*10000,1)) %>% 
   write_csv("outputs/summarized_data/poverty_ineligible_per_capita.csv", na="")
 
-
-hale_counties <- c("G0100630", "G0100910", "G0101050", "G0101250")
-
-old1_hale <- filter(old1, GISJOIN %in% hale_counties)
-old1_hale <- old1_hale %>% left_join(old2)
-
-old1_hale <- old1_hale %>% 
-  summarize(AGU001=sum(AGU001),
-            AG3001=sum(AG3001)) %>% 
-  mutate(percent_slaves=AGU001/AG3001*100)

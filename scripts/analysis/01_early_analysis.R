@@ -15,14 +15,7 @@ df <- rbind(df, df2)
 territories <- c("AS", "GU", "MP", "PR", "VI")
 
 county_analysis <- df %>% 
-  #filter(ymd_hms(declarationDate)>=ymd("2021-03-01")) %>% 
-#  filter(year(ymd_hms(declarationDate))>=2021) %>% 
-  ##filter(incidentType!="Fire") %>% 
-  #filter(incidentType!="Biological") %>% 
-  #filter(ihpReferral!=FALSE) %>% 
   filter(!state %in% territories) %>% 
-  #filter(!residenceType %in% c("Mobile Home", "Travel Trailer")) %>% 
-  #filter(ownRent!="Renter") %>% 
   mutate(home_status=case_when(
     grepl("Eligible", haStatus) ~ "Eligible",
     grepl("IOWNV", haStatus) ~ "Ineligible, Ownership Not Verified",
@@ -36,15 +29,9 @@ county_analysis <- df %>%
 
 write_csv(county_analysis, "outputs/county_analysis_updated.csv", na="")
 
-
+# looking at it annually
 county_analysis <- df %>% 
-  #filter(year(ymd_hms(declarationDate))>2015) %>% 
-  ##filter(incidentType!="Fire") %>% 
-  #filter(incidentType!="Biological") %>% 
-  #filter(ihpReferral!=FALSE) %>% 
   filter(!state %in% territories) %>% 
-  
-  #filter(ownRent!="Renter") %>% 
   mutate(home_status=case_when(
     grepl("Eligible", haStatus) ~ "Eligible",
     grepl("IOWNV", haStatus) ~ "Ineligible, Ownership Not Verified",
@@ -59,30 +46,9 @@ county_analysis <- df %>%
 
 write_csv(county_analysis, "outputs/summarized_data/county_analysis_updated_annual.csv", na="")
 
+
+# denials by incident type
 incidentType_analysis <- df %>% 
-  ##filter(incidentType!="Fire") %>% 
-  #filter(incidentType!="Biological") %>% 
-  #filter(ihpReferral!=FALSE) %>% 
-  filter(!state %in% territories) %>% 
-  #filter(ownRent!="Renter") %>% 
-  mutate(home_status=case_when(
-    grepl("Eligible", haStatus) ~ "Eligible",
-    grepl("IOWNV", haStatus) ~ "Ineligible, Ownership Not Verified",
-    TRUE ~ "Other"
-  )) %>% 
-  group_by(incidentType, home_status) %>% 
-  summarize(total=n()) %>% 
-  group_by(incidentType) %>% 
-  mutate(percent=round(total/sum(total, na.rm=T)*100,1))
-
-write_csv(incidentType_analysis, "outputs/summarized_data/incidentType_summary.csv", na="")
-
-
-incidentType_analysis <- df %>% 
-  ##filter(incidentType!="Fire") %>% 
-  #filter(incidentType!="Biological") %>% 
-  #filter(ihpReferral!=FALSE) %>% 
-  #filter(ownRent!="Renter") %>% 
   filter(!state %in% territories) %>% 
   mutate(home_status=case_when(
     grepl("Eligible", haStatus) ~ "Eligible",
@@ -96,11 +62,8 @@ incidentType_analysis <- df %>%
 
 write_csv(incidentType_analysis, "outputs/summarized_data/incidentType_summary.csv", na="")
 
+# denials by residence type
 residenceType_analysis <- df %>% 
-  ##filter(incidentType!="Fire") %>% 
-  #filter(incidentType!="Biological") %>% 
-  #filter(ihpReferral!=FALSE) %>% 
-  #filter(ownRent!="Renter") %>% 
   filter(!state %in% territories) %>% 
   mutate(home_status=case_when(
     grepl("Eligible", haStatus) ~ "Eligible",
@@ -114,13 +77,9 @@ residenceType_analysis <- df %>%
 
 write_csv(residenceType_analysis, "outputs/summarized_data/residenceType_summary.csv", na="")
 
-
+# analysis by ownership
 ownRent_analysis <- df %>% 
-  #filter(incidentType!="Fire") %>% 
-  #filter(incidentType!="Biological") %>% 
-  #filter(ihpReferral!=FALSE) %>% 
   filter(!state %in% territories) %>% 
-  #filter(ownRent!="Renter") %>% 
   mutate(home_status=case_when(
     grepl("Eligible", haStatus) ~ "Eligible",
     grepl("IOWNV", haStatus) ~ "Ineligible, Ownership Not Verified",
@@ -133,11 +92,9 @@ ownRent_analysis <- df %>%
 
 write_csv(ownRent_analysis, "outputs/summarized_data/ownRent_summary.csv", na="")
 
+# analysis by city
 city_analysis <- df %>% 
-  #filter(incidentType!="Biological") %>% 
-  #filter(ihpReferral!=FALSE) %>% 
   filter(!state %in% territories) %>% 
-#  filter(ownRent!="Renter") %>% 
   mutate(home_status=case_when(
     grepl("Eligible", haStatus) ~ "Eligible",
     grepl("IOWNV", haStatus) ~ "Ineligible, Ownership Not Verified",
@@ -150,12 +107,9 @@ city_analysis <- df %>%
   pivot_wider(names_from="home_status", values_from=c("total", "percent"))
 
 
-
+# analysis by state
 state_analysis <- df %>% 
-#  filter(incidentType!="Biological") %>% 
-#  filter(ihpReferral!=FALSE) %>% 
   filter(!state %in% territories) %>% 
-#  filter(ownRent!="Renter") %>% 
   mutate(home_status=case_when(
     grepl("Eligible", haStatus) ~ "Eligible",
     grepl("IOWNV", haStatus) ~ "Ineligible, Ownership Not Verified",
@@ -168,18 +122,13 @@ state_analysis <- df %>%
   pivot_wider(names_from="home_status", values_from=c("total", "percent"))
 
 
-
-
+#export as an Excel spreadsheet
 write_xlsx(list(states= state_analysis,  counties=county_analysis,
                 cities=city_analysis), path="outputs/summarized_data/fema_2015_2021.xlsx")
 
-
-
+# analysis by income group
 grossIncome_df <- df %>% 
-  #filter(incidentType!="Biological") %>% 
-  #filter(ihpReferral!=FALSE) %>% 
   filter(!state %in% territories) %>% 
-  #filter(ownRent!="Renter") %>% 
   mutate(home_status=case_when(
     grepl("Eligible", haStatus) ~ "Eligible",
     grepl("IOWNV", haStatus) ~ "Ineligible, Ownership Not Verified",
