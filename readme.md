@@ -24,4 +24,4 @@ The raw data is unavailable to post here because it is too large but the `01_fem
 
 # Notebooks
 
-* [Interactive exploratory county map](http://wpinvestigative.github.io/fema_ihp_denials/01_map.html) - Analysis of spin rates and pitchers and teams and hit rates
+* [Interactive exploratory county map](http://wpinvestigative.github.io/fema_ihp_denials/outputs/findings/01_map.html) - Analysis of spin rates and pitchers and teams and hit rates
