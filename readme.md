@@ -2,7 +2,7 @@
 
 # About this story
 
-[The real damage: Why FEMA is denying aid to Black disaster survivors in the Deep South](https://www.washingtonpost.com)
+[The real damage: Why FEMA is denying aid to Black disaster survivors in the Deep South](https://www.washingtonpost.com/nation/2021/07/11/fema-black-owned-property)
 
 The Post reviewed more than 9.5 million applications to FEMA's Individuals and Households Program since 2010 to determine rejection rates based on land title issues. Details on the Post's methodology and summarized data can be found within this repo.
 
@@ -20,8 +20,8 @@ The raw data is unavailable to post here because it is too large but the `01_fem
 
 * **[scripts/analysis](scripts/analysis)** - Scripts for analysis
 
-* **[outputs/findings](https://github.com/wpinvestigative/fema_ihp_denials/tree/main/outputs/findings)** - Exploratory county map
+* **[outputs/findings](https://github.com/wpinvestigative/fema_ihp_denials/tree/main/outputs/findings)** - Exploratory notebooks
 
 # Notebooks
 
-* [Interactive exploratory county map](http://wpinvestigative.github.io/fema_ihp_denials/outputs/findings/01_map.html) - Analysis of spin rates and pitchers and teams and hit rates
+* [Interactive exploratory county map](http://wpinvestigative.github.io/fema_ihp_denials/outputs/findings/01_map.html) - Exploratory county map
